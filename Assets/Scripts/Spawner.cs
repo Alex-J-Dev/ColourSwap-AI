@@ -26,8 +26,9 @@ public class Spawner : MonoBehaviour
     {
         spawnY += distance;
 
-        Instantiate(obstaclePrefab, new Vector3(0, spawnY, 0), Quaternion.identity);
-        Instantiate(coinPrefab, new Vector3(0, spawnY + 1.5f, 0), Quaternion.identity);
-        Instantiate(colorChangerPrefab, new Vector3(0, spawnY + 3f, 0), Quaternion.identity);
+        GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(0, spawnY, 0), Quaternion.identity);
+        Instantiate(coinPrefab, obstacle.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        Instantiate(colorChangerPrefab, obstacle.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+
     }
 }
