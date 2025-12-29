@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        // Check if the ball falls below the camera
+        if (transform.position.y < Camera.main.transform.position.y - 10f)
+        {
+            Explode();
+        }
     }
 
     void Jump()
@@ -49,12 +55,23 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
+        if (collision.CompareTag("Coin"))
+        {
+            ScoreManager.score++;
+            Destroy(collision.gameObject);
+        }
+
         if (collision.CompareTag("Obstacle"))
         {
-            if (collision.GetComponent<SpriteRenderer>().color != currentColor)
+            // Get the color of the obstacle
+            Color obstacleColor = collision.GetComponent<SpriteRenderer>().color;
+
+            // Only explode if the colors are different
+            if (obstacleColor != currentColor)
             {
                 Explode();
             }
+            // If colors match, do nothing (pass through)
         }
     }
 
