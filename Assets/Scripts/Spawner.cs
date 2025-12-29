@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefabs; // array of obstacle prefabs
     public GameObject coinPrefab;
     public GameObject colorChangerPrefab;
 
@@ -26,9 +26,12 @@ public class Spawner : MonoBehaviour
     {
         spawnY += distance;
 
-        GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(0, spawnY, 0), Quaternion.identity);
-        Instantiate(coinPrefab, obstacle.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        Instantiate(colorChangerPrefab, obstacle.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+        // Randomly select obstacle
+        int rand = Random.Range(0, obstaclePrefabs.Length);
+        GameObject obstacle = Instantiate(obstaclePrefabs[rand], new Vector3(0, spawnY, 0), Quaternion.identity);
 
+        // Spawn coin and color changer relative to obstacle
+        Instantiate(coinPrefab, obstacle.transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+        Instantiate(colorChangerPrefab, obstacle.transform.position + new Vector3(0, 2f, 0), Quaternion.identity);
     }
 }
