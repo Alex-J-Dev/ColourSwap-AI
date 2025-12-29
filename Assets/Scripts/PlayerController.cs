@@ -10,25 +10,36 @@ public class PlayerController : MonoBehaviour
 
     public GameObject explosionPrefab; // assign in inspector
 
+    public static bool isAlive = true;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         SetRandomColor();
+
+        isAlive = true; // reset flag on scene reload
+        rb.isKinematic = false;
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     void Update()
     {
+        if (!isAlive) return;
+
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
+    }
 
-        // Die if player falls off screen
-        if (transform.position.y < Camera.main.transform.position.y - 10f)
+    void LateUpdate()
+    {
+        if (transform.position.y < Camera.main.transform.position.y - 6f)
         {
             Die();
         }
     }
+
 
     void Jump()
     {
@@ -85,18 +96,18 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        // Spawn explosion
+        if (!isAlive) return; // prevent multiple calls
+        isAlive = false;
+
         if (explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // Hide the player
         GetComponent<SpriteRenderer>().enabled = false;
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
 
-        // Restart after 1 second
         StartCoroutine(RestartGame());
     }
 

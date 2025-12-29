@@ -157,6 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 7
   currentColor: {r: 0, g: 0, b: 0, a: 0}
+  explosionPrefab: {fileID: 1625056699127251736, guid: e3f677442da3a0847afe5e3d858aafd9, type: 3}
 --- !u!58 &239007499
 CircleCollider2D:
   m_ObjectHideFlags: 0

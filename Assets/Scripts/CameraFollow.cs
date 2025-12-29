@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if (player.position.y > transform.position.y)
+        if (PlayerController.isAlive && player.position.y > transform.position.y)
         {
             transform.position = new Vector3(0, player.position.y, -10);
         }
