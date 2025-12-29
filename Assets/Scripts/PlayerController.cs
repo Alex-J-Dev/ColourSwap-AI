@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 7f;
     private Rigidbody2D rb;
-
     public Color currentColor;
+
+    public GameObject explosionPrefab; // assign in inspector
 
     void Start()
     {
@@ -20,10 +23,10 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
-        // Check if the ball falls below the camera
+        // Die if player falls off screen
         if (transform.position.y < Camera.main.transform.position.y - 10f)
         {
-            Explode();
+            Die();
         }
     }
 
@@ -47,6 +50,14 @@ public class PlayerController : MonoBehaviour
         GetComponent<SpriteRenderer>().color = currentColor;
     }
 
+    bool ColorsMatch(Color a, Color b)
+    {
+        float tolerance = 0.01f;
+        return Mathf.Abs(a.r - b.r) < tolerance &&
+               Mathf.Abs(a.g - b.g) < tolerance &&
+               Mathf.Abs(a.b - b.b) < tolerance;
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("ColorChanger"))
@@ -63,21 +74,35 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("Obstacle"))
         {
-            // Get the color of the obstacle
             Color obstacleColor = collision.GetComponent<SpriteRenderer>().color;
 
-            // Only explode if the colors are different
-            if (obstacleColor != currentColor)
+            if (!ColorsMatch(obstacleColor, currentColor))
             {
-                Explode();
+                Die();
             }
-            // If colors match, do nothing (pass through)
         }
     }
 
-    void Explode()
+    void Die()
     {
-        Debug.Log("Game Over");
-        Time.timeScale = 0f;
+        // Spawn explosion
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
+
+        // Hide the player
+        GetComponent<SpriteRenderer>().enabled = false;
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
+
+        // Restart after 1 second
+        StartCoroutine(RestartGame());
+    }
+
+    System.Collections.IEnumerator RestartGame()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
