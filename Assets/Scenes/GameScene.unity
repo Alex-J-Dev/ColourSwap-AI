@@ -806,7 +806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstaclePrefabs:
-  - {fileID: 5642946243241085697, guid: b13e9c65a2f188248b7c261b5c520b25, type: 3}
+  - {fileID: 418018491524274018, guid: d0a2e05657582504bb59787a90fe57fc, type: 3}
   - {fileID: 8106067629174281410, guid: d61ea29db4067ca4ab0999b30b404021, type: 3}
   coinPrefab: {fileID: 6033482118769027391, guid: 0ab72172744cf274aa9ec22069bde18c, type: 3}
   colorChangerPrefab: {fileID: 3948654096214331000, guid: 331442b56d9ac0640868d68569c2ae86, type: 3}
